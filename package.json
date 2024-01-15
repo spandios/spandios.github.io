@@ -1,0 +1,13 @@
+{
+  "name": "spandios.github.io-main",
+  "version": "1.0.0",
+  "description": "[![Gem Version](https://img.shields.io/gem/v/jekyll-theme-chirpy)][gem]&nbsp; [![GitHub license](https://img.shields.io/github/license/cotes2020/chirpy-starter.svg?color=blue)][mit]",
+  "main": "index.js",
+  "scripts": {
+    "dev": "bundle exec jekyll s",
+    "new-post": "bundle exec jekyll post rename-post",
+    "new-draft": "bundle exec jekyll draft rename-draft"
+  },
+  "author": "",
+  "license": "ISC"
+}
