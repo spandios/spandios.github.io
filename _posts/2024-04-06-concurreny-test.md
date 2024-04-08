@@ -155,9 +155,11 @@ BlockingQueue가 기존 큐와 다른 특징은 다음과 같다.
     // Wait for both threads to finish
     producer.join()
     consumer.join()
+     
+```
 
-
-결과 :
+```
+결과:
 Produced: 1
 Produced: 2
 Produced: 3
@@ -178,7 +180,9 @@ Consumed: 7
 Consumed: 8
 Consumed: 9
 Consumed: 10
-
-5까지는 바로바로 큐에 삽입 되지만 큐가 꽉 찼을 때는 블록 된다. 
-이후 take()메서드가 호출 되어 큐가 빈 공간이 생기면 바로 대기중인 6을 추가하는 쓰레드가 실행되어 추가 되는 것을 볼 수 있다. 
 ```
+5까지는 바로바로 큐에 삽입 되지만 큐가 꽉 찼을 때는 블록 된다.
+
+이후 take()메서드가 호출 되어 큐가 빈 공간이 생기면 바로 대기중인 6을 추가하는 쓰레드가 실행되어 추가 되는 것을 볼 수 있다.
+
+
