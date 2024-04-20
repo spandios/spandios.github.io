@@ -1,13 +1,13 @@
 ---
 layout: post
-title: 경쟁조건 해결하기 - 프로그래밍 언어
+title: 동시성 제어  - 프로그래밍 언어
 date: 2024-04-18 10:43 +0900
 img_path: /assets/images/
 category: [ concurrency ]
 tags: [ Concurrency ]
 ---
 
-이제 전에 글에서 알아보았던 동시성에서 발생할 수 있는 원자성과 가시성의 문제를 해결하는 방법에 대해 알아보려 한다.
+이제 전에 글에서 알아보았던 동시성에서 발생할 수 있는 원자성과 가시성의 문제를 언어수준에서 해결하는 방법에 대해 알아보려 한다.
 
 그 전에 관련된 개념을 간단히 살펴보자.
 
@@ -329,6 +329,87 @@ fun main() {
 running 변수에 @Volatile 키워드를 붙여주면, 스레드 2가 running 변수를 변경하면 그 즉시 메인메모리에도 적용되기 때문에 스레드 1도 즉시 변경된 값을 알 수 있게 된다.
 
 따라서 while문이 무한 반복 되지 않고 All threads finished가 출력되는 것을 볼 수 있다.
+
+# ReentrantLock
+
+ReentrantLock은 synchronized와 같은 기능을 제공하는 클래스이다. synchronized와 다르게 ReentrantLock은 락을 획득한 스레드가 다시 락을 획득할 수 있는 재진입이 가능하다.
+
+주로 재귀 호출이나 다른 메서드를 호출할 때 사용할 때 주로 사용되는데 잠금을 획득한 상태에서 다른 메서드를 호출해야 하는 경우에 사용한다.
+
+개발자가 직접 락을 걸고 다시 락을 해제하는 작업을 할 수 있기 때문에 synchronized보다 더 세밀한 제어가 가능한 장점이 있지만 그 만큼 신경을 더 써야한다. 
+
+잠금을 획득하면 임계 영역에 다른 스레드는 접근하지 못하기 때문에 원자성을 보장하며, 잠금을 해제하고 다른 스레드가 잠금을 획득할 때 메인 메모리에서 최신 값을 얻기 때문에 가시성도 보장한다.
+
+ReentrantLock은 lock()과 unlock() 메서드를 사용해 잠금을 획득하고 해제한다.
+
+```kotlin
+class ReentrantProcess {
+  private val lock = ReentrantLock()
+
+  fun initialProcess() {
+    lock.lock()
+    try {
+      println("Initial process started. lock count : ${lock.holdCount}")
+      nestedProcess()
+    } finally {
+      lock.unlock()
+      println("Initial process unlock. lock count : ${lock.holdCount}")
+    }
+  }
+
+  private fun nestedProcess() {
+    lock.lock()
+    try {
+      println("Nested process executed. lock count : ${lock.holdCount}")
+    } finally {
+      lock.unlock()
+      println("Nested process unlock. lock count : ${lock.holdCount}")
+    }
+  }
+
+
+}
+
+fun main() {
+  val reentrantProcess = ReentrantProcess()
+
+  val threadCount = 10
+  val executorService = Executors.newFixedThreadPool(threadCount)
+  val countDownLatch = CountDownLatch(threadCount)  // upPrice와 downPrice 각각에 대한 카운트
+
+
+  executorService.submit {
+    reentrantProcess.initialProcess()
+    countDownLatch.countDown()
+  }
+
+
+  countDownLatch.await()  // 모든 작업이 완료될 때까지 기다립니다.
+  executorService.shutdown()
+  
+  // Initial process started. lock count : 1
+  // Nested process executed. lock count : 2
+  // Nested process unlock. lock count : 1
+  // Initial process unlock. lock count : 0
+}
+
+```
+
+initialProcess 메서드에서 lock을 획득하고 nestedProcess 메서드를 호출한다. nestedProcess 메서드에서도 lock을 획득하고 해제하고 있다.
+
+## 마치며
+
+syncronized, atomic type, volatile, ReentrantLock은 동시성 문제를 해결하는 방법들이다.
+
+synchronized는 임계영역에 다른 스레드에게 접근하지 못하도록 잠금을 사용하는 강력한 방법이지만 성능에 영향을 미칠 수 있다. 
+
+atomic type은 원자적 연산을 지원하는 데이터 타입이다. synchronized와 다르게 잠금을 강제하는게 아니라 실패 처리를 어떻게 할지 개발자가 정할 수 있기 때문에 스레드 대기와는 다르게 다른 작업을 할 수 있는 유연성을 가지며, 락 처리에 대한 오버헤드가 적다.
+
+volatile는 한 스레드에서 값이 변경되면 변경된 값이 다른 스레드에 즉시 보이게 된다. 즉, 한 스레드가 volatile 변수를 수정하면, 그 변경 사항이 모든 다른 스레드에게 반영되어 보이게 된다.
+
+ReentrantLock은 synchronized와 같은 기능을 제공하는 클래스이다. synchronized와 다르게 ReentrantLock은 락을 획득한 스레드가 다시 락을 획득할 수 있는 재진입이 가능하다.
+
+각 방법에 적합한 상황에 맞게 사용하도록 하자.
 
 
 #### Reference
