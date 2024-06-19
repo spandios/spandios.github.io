@@ -16,7 +16,7 @@ tags: [ design-pattern, 객체 생성 ]
 
 추가적으로 객체 생성 전 후로 추가적인 로직이 필요한 경우도 팩터리 메서드 패턴을 사용해 효과적으로 처리할 수 있다.
 
-![](/assets/images/factory-method-1.png)
+![]({{site.url}}/assets/images/factory-method-1.png)
 
 
 위의 그림은 팩터리 메서드 패턴의 구조를 나타낸다. 
