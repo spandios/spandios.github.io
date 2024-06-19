@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Singleton Pattern이란
+title: Singleton Pattern
 date: 2024-05-16 08:00 +0900
 img_path: /assets/images/
 category: design-pattern
