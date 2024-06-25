@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Factory Method Pattern
-date: 2024-05-16 08:00 +0900
+date: 2024-06-12 08:00 +0900
 img_path: /assets/images/
 category: design-pattern
 tags: [ design-pattern, 객체 생성 ]
@@ -256,7 +256,19 @@ object Client {
 - 팩터리 클래스를 사용하면 객체 생성을 위한 별도의 클래스가 추가되므로 코드의 복잡성이 증가할 수 있다.
     
   
-  
+# 요약
+
+팩터리 메서드 패턴은 객체 생성을 특정 서브 클래스에서 결정하도록 하는 패턴이다. 
+
+객체 생성의 책임을 팩터리 클래스에 위임함으로써 객체 생성의 책임을 분리할 수 있다. 객체 생성 전후로 추가적인 로직이 필요한 경우 팩터리 메서드 패턴을 사용해 효과적으로 처리할 수 있다. 객체 생성의 변화에 대응하기 쉽다. 
+
+새로운 객체가 추가되거나 객체 생성 로직이 변경되어도 클라이언트 코드를 수정할 필요가 없다.
+
+
+## Reference
+
+- 코딩으로 학습하는 GoF의 디자인 패턴 - 백기선
+- https://inpa.tistory.com/entry/GOF-%F0%9F%92%A0-%ED%8C%A9%ED%86%A0%EB%A6%AC-%EB%A9%94%EC%84%9C%EB%93%9CFactory-Method-%ED%8C%A8%ED%84%B4-%EC%A0%9C%EB%8C%80%EB%A1%9C-%EB%B0%B0%EC%9B%8C%EB%B3%B4%EC%9E%90
 
 
 
