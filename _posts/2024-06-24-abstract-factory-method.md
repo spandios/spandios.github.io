@@ -21,25 +21,14 @@ tags: [ design-pattern, 객체 생성 ]
 팩토리 메서드 패턴에선 하나의 팩토리가 하나의 객체를 생성하고 생성 전후로 후속 처리를 하는 반면 추상 팩토리 패턴은 하나의 팩토리가 여러 객체를 생성한다.
 
 
+## 빌더 패턴 구조
 ![]({{site.url}}/assets/images/abstract-factory-pattern.png)
 
-
-위의 그림은 추상 팩토리 패턴의 구조를 나타낸다. 
-
-AbstractFactory: 추상 팩토리 인터페이스로, 관련된 객체 군을 생성하는 메서드를 선언한다.
-
-
-ConcreteFactory: AbstractFactory를 구현한 클래스로, 객체 군을 생성하는 메서드를 실제로 구현한다.
-
-AbstractProduct: 객체 군의 인터페이스로, 객체 군의 공통 인터페이스를 선언한다.
-
-
-ConcreteProduct: AbstractProduct를 구현한 클래스로, 객체 군의 실제 객체를 생성한다.
-
-
-Client: AbstractFactory와 AbstractProduct 인터페이스만을 의존해 실제 객체를 생성하고 사용하는 곳이다. 
-
-이제 추상 팩토리 패턴 예시를 살펴보려한다.
+- AbstractFactory: 추상 팩토리 인터페이스로, 관련된 객체 군을 생성하는 메서드를 선언한다.
+- ConcreteFactory: AbstractFactory를 구현한 클래스로, 객체 군을 생성하는 메서드를 실제로 구현한다.
+- AbstractProduct: 객체 군의 인터페이스로, 객체 군의 공통 인터페이스를 선언한다.
+- ConcreteProduct: AbstractProduct를 구현한 클래스로, 객체 군의 실제 객체를 생성한다.
+- Client: AbstractFactory와 AbstractProduct 인터페이스만을 의존해 실제 객체를 생성하고 사용하는 곳이다.
 
 ## 브랜드 컴퓨터 부품 예시
 
