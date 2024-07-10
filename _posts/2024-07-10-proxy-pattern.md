@@ -117,6 +117,55 @@ fun main() {
 
 - 코드가 복잡해질수 있다.
 
+## 실제 사례
+
+- 자바의 다이나믹 프록시
+런타임 환경에서 동적으로 프록시 객체를 생성하는 방법이 있다.
+
+```kotlin
+
+fun main(){
+  val realSubject = RealSubject() 
+  val proxy = Proxy.newProxyInstance(
+    realSubject.javaClass.classLoader, // 클래스 로더
+    realSubject.javaClass.interfaces, // 인터페이스
+    InvocationHandler { proxy, method, args ->
+      println("before")
+      val result = method.invoke(realSubject, args)
+      println("after")
+      result
+    }
+  ) as Subject
+  proxy.doSomething() // 기존 실제 객체 메서드 호출 앞뒤로 before, after 출력
+}
+
+```
+
+
+- Spring AOP
+
+Spring AOP는 프록시 패턴을 사용해 구현되어 있다. 
+
+`@Before` 어노테이션을 사용해 메서드 호출 전에 로깅을 하는 기능을 추가할 수 있다. 
+
+```kotlin
+
+@Aspect
+@Component
+class LoggingAspect {
+  @Before("execution(* com.example..*.*(..))")
+  fun before() {
+    println("before")
+  }
+}
+
+```
+
+스프링 aop는 다이나믹 프록시(만약 인터페이스를 사용하지 않는 빈이라면 CGLIB를 사용)를 이용해 Target되는 빈 객체를 감싸는 프록시 객체를 생성하고 이를 통해 추가적인 기능을 수행한다. 
+
+
+
+
 
 
 ## Reference
