@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Flyweight Pattern
-date: 2024-07-05 08:00 +0900
+date: 2024-07-10 08:00 +0900
 img_path: /assets/images/
 category: design-pattern
 tags: [ design-pattern, 구조 관련 디자인 패턴 ]
@@ -162,10 +162,6 @@ class LoggingAspect {
 ```
 
 스프링 aop는 다이나믹 프록시(만약 인터페이스를 사용하지 않는 빈이라면 CGLIB를 사용)를 이용해 Target되는 빈 객체를 감싸는 프록시 객체를 생성하고 이를 통해 추가적인 기능을 수행한다. 
-
-
-
-
 
 
 ## Reference

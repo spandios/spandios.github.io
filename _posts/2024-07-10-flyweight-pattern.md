@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Flyweight Pattern
-date: 2024-07-05 08:00 +0900
+date: 2024-07-10 08:00 +0900
 img_path: /assets/images/
 category: design-pattern
 tags: [ design-pattern, 구조 관련 디자인 패턴 ]
