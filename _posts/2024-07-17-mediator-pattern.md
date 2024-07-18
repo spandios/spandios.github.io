@@ -151,11 +151,10 @@ class Airplane(val name: String, val airTrafficControl: AirTrafficControl) {
   init {
     airTrafficControl.addAirplane(this)
   }
-
   fun requestTakeoff() {
     airTrafficControl.requestTakeoff(this)
   }
-
+  
   fun requestLanding() {
     airTrafficControl.requestLanding(this)
   }
