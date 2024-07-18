@@ -16,10 +16,10 @@ timezone: Asia/Seoul
 
 title: 알파카 개발 블로그 # the main title
 
-tagline: 긍정과 즐거움 # it will display as the sub-title
+tagline: 간단히 메모하는 블로그입니다  # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
-  허주영 블로그입니다. 백엔드(스프링,spring)와 프론트엔드
+  간단히 메모하는 개발 블로그입니다
 
 # Fill in the protocol & hostname for your site.
 # e.g. 'https://username.github.io', note that it does not end with a '/'.
