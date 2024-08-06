@@ -3,7 +3,7 @@
 source "https://rubygems.org"
 
 # ruby '3.2.3'
-ruby '3.2.4'  # github
+ruby '3.2.5'  # github
 # gem "jekyll-theme-chirpy", "~> 6.4", ">= 6.4.1"
 
 # group :test do
