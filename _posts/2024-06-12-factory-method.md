@@ -14,7 +14,7 @@ tags: [ design-pattern, 객체 생성 ]
 
 즉, 클라이언트가 직접 객체 생성하는게 아닌 공장 클래스에 위임함으로써 객체 생성의 책임을 분리 할 수 있다.
 
-추가적으로 객체 생성 전 후로 추가적인 로직이 필요한 경우도 팩터리 메서드 패턴을 사용해 효과적으로 처리할 수 있다.
+또한, 객체 생성 전 후로 추가적인 로직이 필요한 경우도 팩터리 메서드 패턴을 사용해 효과적으로 처리할 수 있다.
 
 ![]({{site.url}}/assets/images/factory-method-1.png)
 
@@ -30,13 +30,13 @@ tags: [ design-pattern, 객체 생성 ]
 
 
 
-# Before 팩터리 메서드 패턴 
+# 패턴 적용 전 
 
 초기 선박 회사가 하나의 선박을 생산하는 코드를 작성한다고 가정해보자.
 
 ```kotlin
 // 선박 클래스로 선박의 이름, 색상, 로고를 가지고 있다.
-class Ship2 {
+class Ship {
 
   lateinit var name: String
 
@@ -96,25 +96,19 @@ object ShipFactory {
 }
 
 // 클라이언트 코드
-object Client {
-  @JvmStatic
-  fun main(args: Array<String>) {
-    val ship = ShipFactory.createShip("BasicShip", "wndudpower@gmail.com")
-    println(ship)
-
-  }
+fun main(){
+  val ship = ShipFactory.createShip("BasicShip", "wndudpower@gmail.com")
+  println(ship)
 }
 
 
 ```
 
-위의 코드는 만약 회사가 잘 되어 다른 종류의 선박이 추가되면 추가될수록 위의 createShip 메서드에 if문을 추가해야하고 이는 코드의 복잡성을 증가시킨다.
+위의 코드는 다른 종류의 선박이 추가되면 추가될수록 if문을 추가해야하고 이는 코드의 복잡성을 증가시킨다.
 
 또 만약 선박 생성의 로직 자체가 변경되면 클라이언트 코드까지 수정해야한다. 이는 객체 생성의 책임이 팩토리 클래스에 있지 않고 클라이언트에 있기 때문이다. 이것은 OCP(Open-Closed Principle)를 위반한다.
 
-## 팩토리 메서드 패턴 적용
-
-이 때 필요한 것이 팩토리 메서드 패턴이다.
+## 패턴 적용
 
 팩터리 메서드 패턴을 사용하면 객체 생성의 책임 분리 및 객체 생성 전 후로 추가적인 로직을 효율적으로 처리할 수 있다.
 
@@ -141,11 +135,19 @@ class CargoShip : Ship() {
 
 ```
 
-이 후 팩토리 클래스(Creator)를 정의한다. interface로 ShipFacotry로 정의한다. 
+이 후 팩토리 클래스(Creator)를 interface로 ShipFacotry로 정의한다. 
 
-createShip 메서드 중 객체 생성 전후에 추가적인 로직을 처리하는 부분인 `prepareFor`, `validate`, `sendEmailTo`를 메서드로 분리한다. 특히 sendEmailTo는 추상 메서드로 정의한다.
+`buildShip` 메서드를 통해 객체를 생성하고, 객체 생성 전후로 추가적인 로직을 처리하는 메서드를 정의한다. 
 
-실제 구체적인 객체 생성 메서드인 createShip 메서드는 서브 클래스에서 구현하도록 추상화한다.
+여기서 `buildShip`은 기본 메서드로 구현되어 전체 로직을 담당한다. 
+
+또, 기존에 객체 생성 전후에 추가적인 로직을 처리하는 부분인 `prepareFor`, `validate`, `sendEmailTo`를 메서드로 분리한다. 
+
+실제 구체적인 객체 생성 메서드인 `createShip` 메서드와 이메일을 전송하는 `sendEmailTo`메서드를 서브 팩토리 클래스에서 구현하도록 추상화한다. 
+
+`validate`와 `prepareFor` 메서드 또한 기본 구현으로 공통된 로직을 처리하도록 한다. 이 공통 로직은 서브 클래스에서 재정의할 필요가 없기 때문에 private로 선언한다.   
+
+이 구현의 핵심은 `buildShip` 메서드가 미리 뼈대를 정의해 로직의 흐름을 제어하며, 추가적으로 서브 클래스에서 재정의한 메서드를 호출해 로직을 완성한다.
 
 ```kotlin
 
@@ -153,7 +155,7 @@ interface ShipFactory {
   fun buildShip(name: String, email: String?): Ship? {
     validate(name, email)
     prepareFor(name)
-    val ship = buildShip()
+    val ship = createShip()
     sendEmailTo(email, ship)
     return ship
   }
@@ -244,25 +246,14 @@ object Client {
 
 # 팩터리 메서드 패턴의 장단점
 
-## 장점
+- 장점
+  - 객체 생성의 책임을 팩터리 클래스에 위임함으로써 객체 생성의 책임을 분리할 수 있다.
+  - 객체 생성 전후로 추가적인 로직이 필요한 경우 팩터리 메서드 패턴을 사용해 효과적으로 처리할 수 있다.
+  - 객체 생성의 변화에 대응하기 쉽다. 새로운 객체가 추가되거나 객체 생성 로직이 변경되어도 클라이언트 코드를 수정할 필요가 없다.
 
-- 객체 생성의 책임을 팩터리 클래스에 위임함으로써 객체 생성의 책임을 분리할 수 있다.
-- 객체 생성 전후로 추가적인 로직이 필요한 경우 팩터리 메서드 패턴을 사용해 효과적으로 처리할 수 있다.
-- 객체 생성의 변화에 대응하기 쉽다. 새로운 객체가 추가되거나 객체 생성 로직이 변경되어도 클라이언트 코드를 수정할 필요가 없다.
+- 단점
+  - 팩터리 클래스를 사용하면 객체 생성을 위한 별도의 클래스가 추가되므로 코드의 복잡성이 증가할 수 있다.
 
-
-## 단점
-
-- 팩터리 클래스를 사용하면 객체 생성을 위한 별도의 클래스가 추가되므로 코드의 복잡성이 증가할 수 있다.
-    
-  
-# 요약
-
-팩터리 메서드 패턴은 객체 생성을 특정 서브 클래스에서 결정하도록 하는 패턴이다. 
-
-객체 생성의 책임을 팩터리 클래스에 위임함으로써 객체 생성의 책임을 분리할 수 있다. 객체 생성 전후로 추가적인 로직이 필요한 경우 팩터리 메서드 패턴을 사용해 효과적으로 처리할 수 있다. 객체 생성의 변화에 대응하기 쉽다. 
-
-새로운 객체가 추가되거나 객체 생성 로직이 변경되어도 클라이언트 코드를 수정할 필요가 없다.
 
 
 ## Reference

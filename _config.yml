@@ -16,10 +16,10 @@ timezone: Asia/Seoul
 
 title: 알파카 개발 블로그 # the main title
 
-tagline: 간단히 메모하는 블로그입니다  # it will display as the sub-title
+tagline:   # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
-  간단히 메모하는 개발 블로그입니다
+  작지만 소중한 개발 노트
 
 # Fill in the protocol & hostname for your site.
 # e.g. 'https://username.github.io', note that it does not end with a '/'.
